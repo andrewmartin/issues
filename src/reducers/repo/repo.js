@@ -3,8 +3,8 @@ import { createAction, handleActions } from 'redux-actions';
 import { parseError } from 'store/helpers';
 
 const fetchUserStart = createAction('repo/FETCH_START');
-const getRepoSuccess = createAction('repo/FETCH_USER');
-const userError = createAction('repo/ERROR');
+const getReposSuccess = createAction('repo/FETCH_REPOS');
+const repoError = createAction('repo/ERROR');
 
 export const actions = {
   getRepos: () => async (dispatch, state, { api }) => {
@@ -12,13 +12,13 @@ export const actions = {
     const { token } = state().user;
 
     try {
-      const data = await api.get('/user', {
+      const data = await api.get('/user/repos', {
         params: { access_token: token },
       });
-      return dispatch(getRepoSuccess(data));
+      return dispatch(getReposSuccess(data));
     } catch (error) {
       return dispatch(
-        userError({
+        repoError({
           error,
         })
       );
@@ -29,7 +29,7 @@ export const actions = {
 export const defaultState = {
   isLoading: false,
   serverError: null,
-  token: null,
+  items: [],
 };
 
 export default handleActions(
@@ -43,17 +43,17 @@ export default handleActions(
         };
       },
     },
-    [getRepoSuccess]: {
+    [getReposSuccess]: {
       next: (state, { payload: { data } }) => {
         return {
           ...state,
           isLoading: false,
           serverError: null,
-          ...data,
+          items: data,
         };
       },
     },
-    [userError]: {
+    [repoError]: {
       next: (_state, { payload: { error } }) => {
         return {
           isLoading: false,

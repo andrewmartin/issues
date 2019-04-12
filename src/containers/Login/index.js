@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { push } from 'connected-react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -13,20 +14,38 @@ export class Login extends Component {
     apiKey: '',
   };
 
+  componentDidUpdate(prevProps) {
+    const {
+      onLogin,
+      user: { id },
+    } = this.props;
+
+    if (id !== prevProps.user.id && id) {
+      onLogin();
+    }
+  }
+
   onInputChange = value => {
     this.setState({
       apiKey: value,
     });
   };
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault();
     const {
       actions: { setToken, getUser },
     } = this.props;
     const { apiKey } = this.state;
     setToken(apiKey);
-    getUser();
+
+    try {
+      await getUser();
+    } catch (err) {
+      this.setState({
+        apiKey: '',
+      });
+    }
   };
 
   render() {
@@ -61,6 +80,7 @@ const mapStateToProps = ({ user }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  onLogin: () => dispatch(push('/repos')),
   actions: bindActionCreators(
     {
       ...userActions,
