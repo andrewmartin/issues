@@ -19,6 +19,7 @@ Goals of the application:
 2. Copy the token to your clipboard
 3. `yarn` and `yarn start`
 4. Login with your given token.
+5. On Github, make sure you have at least one repository with at least 2 issues to properly showcase the application demo.
 
 ## Developer Quickstart
 
