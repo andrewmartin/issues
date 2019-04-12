@@ -8,7 +8,7 @@ import Error from 'components/Error';
 
 import styles from './Login.module.scss';
 
-class Login extends Component {
+export class Login extends Component {
   state = {
     apiKey: '',
   };
