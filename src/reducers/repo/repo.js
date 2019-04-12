@@ -2,13 +2,13 @@ import { createAction, handleActions } from 'redux-actions';
 
 import { parseError } from 'store/helpers';
 
-const fetchUserStart = createAction('repo/FETCH_START');
+const fetchRepoStart = createAction('repo/FETCH_START');
 const getReposSuccess = createAction('repo/FETCH_REPOS');
 const repoError = createAction('repo/ERROR');
 
 export const actions = {
   getRepos: () => async (dispatch, state, { api }) => {
-    dispatch(fetchUserStart());
+    dispatch(fetchRepoStart());
     const { token } = state().user;
 
     try {
@@ -34,7 +34,7 @@ export const defaultState = {
 
 export default handleActions(
   {
-    [fetchUserStart]: {
+    [fetchRepoStart]: {
       next: state => {
         return {
           ...state,
