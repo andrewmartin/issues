@@ -54,12 +54,13 @@ export class Issues extends Component {
       match: {
         params: { name },
       },
+      issue,
       issues,
       repo: { items: repoItems },
       issue: { serverError },
     } = this.props;
 
-    const hasSetOrder = issues[name];
+    const hasSetOrder = issue.order[name];
 
     return (
       <div className={styles.container}>
