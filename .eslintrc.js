@@ -7,6 +7,14 @@ module.exports = {
     document: true,
     navigator: true,
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['./src'],
+        extensions: ['.js', '.jsx'],
+      },
+    },
+  },
   rules: {
     'react/jsx-filename-extension': [
       1,
