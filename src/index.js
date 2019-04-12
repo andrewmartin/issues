@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from 'store';
 import App from './containers/App/App';
 
-import './index.css';
+import './index.scss';
 
 const target = document.querySelector('#root');
 
