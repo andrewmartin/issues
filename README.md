@@ -27,6 +27,8 @@ Goals of the application:
 2. `yarn`
 3. `yarn start`
 
+*We are using `husky` to enforce the linting rules before committing. Invalid lint rules will attempted to be fixed if found, and prevented from being committed.*
+
 ## Tests
 
 1. `yarn test`
