@@ -2,10 +2,21 @@ module.exports = {
   plugins: ['prettier', 'react', 'jsx-a11y'],
   parser: 'babel-eslint',
   extends: ['airbnb', 'prettier', 'prettier/react'],
+  env: {
+    jest: true,
+  },
   globals: {
     window: true,
     document: true,
     navigator: true,
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['./src'],
+        extensions: ['.js', '.jsx'],
+      },
+    },
   },
   rules: {
     'react/jsx-filename-extension': [
