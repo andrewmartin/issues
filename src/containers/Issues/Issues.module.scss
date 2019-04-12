@@ -25,6 +25,10 @@
   @include pageTitle;
 }
 
+.code {
+  color: $brand-dark;
+}
+
 .input {
   flex: 1;
 }

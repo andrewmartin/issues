@@ -6,6 +6,7 @@ const fetchUserStart = createAction('user/FETCH_START');
 const setUserToken = createAction('user/SET_TOKEN');
 const getUserSuccess = createAction('user/FETCH_USER');
 const userError = createAction('user/ERROR');
+const logoutUser = createAction('user/LOGOUT');
 
 export const actions = {
   setToken: token => dispatch => dispatch(setUserToken(token)),
@@ -27,6 +28,8 @@ export const actions = {
       );
     }
   },
+
+  logoutUser: () => dispatch => dispatch(logoutUser()),
 };
 
 export const defaultState = {
@@ -71,6 +74,9 @@ export default handleActions(
           serverError: parseError(error),
         };
       },
+    },
+    [logoutUser]: {
+      next: () => defaultState,
     },
   },
 

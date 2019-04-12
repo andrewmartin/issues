@@ -4,7 +4,9 @@ import { parseError } from 'store/helpers';
 
 const fetchIssueStart = createAction('issue/FETCH_START');
 const getIssuesSuccess = createAction('issue/FETCH_ISSUES');
-const repoError = createAction('issue/ERROR');
+const setOrder = createAction('issue/SET_ORDER');
+const resetOrder = createAction('issue/RESET_ORDER');
+const issueError = createAction('issue/ERROR');
 
 export const actions = {
   getIssues: ({ owner, name }) => async (dispatch, state, { api }) => {
@@ -18,18 +20,43 @@ export const actions = {
       return dispatch(getIssuesSuccess(data));
     } catch (error) {
       return dispatch(
-        repoError({
+        issueError({
           error,
         })
       );
     }
   },
+
+  setOrder: ({ name, issues }) => dispatch => dispatch(setOrder({ name, issues })),
+
+  resetOrder: ({ name }) => dispatch => dispatch(resetOrder({ name })),
 };
 
 export const defaultState = {
   isLoading: false,
   serverError: null,
   items: [],
+  order: {},
+};
+
+// takes and array of sorted issues,
+// then sets the issue order key based on the id of the item.
+// For example: [{id: 4}, {id: 1}] => { 4: 0, 1: 1 };
+const setIssueOrder = issues =>
+  issues
+    .map((issue, index) => ({
+      [issue.id]: index,
+    }))
+    .reduce((acc, item) => ({
+      ...acc,
+      ...item,
+    }));
+
+// removes the order key (to reset the order value altogether)
+const removeOrder = (state, name) => {
+  const newState = Object.assign({}, state);
+  delete newState[name];
+  return newState;
 };
 
 export default handleActions(
@@ -53,11 +80,30 @@ export default handleActions(
         };
       },
     },
-    [repoError]: {
+    [issueError]: {
       next: (_state, { payload: { error } }) => {
         return {
           isLoading: false,
           serverError: parseError(error),
+        };
+      },
+    },
+    [setOrder]: {
+      next: (state, { payload: { name, issues } }) => {
+        return {
+          ...state,
+          order: {
+            ...state.order,
+            [name]: setIssueOrder(issues),
+          },
+        };
+      },
+    },
+    [resetOrder]: {
+      next: (state, { payload: { name } }) => {
+        return {
+          ...state,
+          order: removeOrder(name, state.order),
         };
       },
     },
