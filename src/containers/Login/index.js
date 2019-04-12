@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import { TextInput } from 'components/Forms';
+import { actions as userActions } from 'reducers/user/user';
+import Error from 'components/Error';
 
 import styles from './Login.module.scss';
 
@@ -17,12 +21,19 @@ class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const {
+      actions: { setToken, getUser },
+    } = this.props;
     const { apiKey } = this.state;
-
-    console.log('apiKey', apiKey);
+    setToken(apiKey);
+    getUser();
   };
 
   render() {
+    const {
+      user: { serverError },
+    } = this.props;
+
     return (
       <main className={styles.layout}>
         <div className={styles.container}>
@@ -37,6 +48,7 @@ class Login extends Component {
             <button className={styles.button} type="submit">
               Submit
             </button>
+            <Error error={serverError} />
           </form>
         </div>
       </main>
@@ -44,4 +56,20 @@ class Login extends Component {
   }
 }
 
-export default connect()(Login);
+const mapStateToProps = ({ user }) => ({
+  user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      ...userActions,
+    },
+    dispatch
+  ),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
