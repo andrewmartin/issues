@@ -18,3 +18,18 @@
     display: none;
   }
 }
+
+.viewAll {
+  padding: 5px 10px;
+  transition: all .2s ease-out;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  outline: none;
+  background: $gray;
+
+  &:hover {
+    cursor: pointer;
+    color: #fff;
+    background: $brand-primary;
+  }
+}

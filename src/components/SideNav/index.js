@@ -15,13 +15,14 @@ class SideNav extends Component {
   };
 
   render() {
-    const { items } = this.props;
+    const { items, history } = this.props;
 
     return (
       <aside className={styles.container}>
         <h3>Repositories</h3>
         {items
           .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
+          .slice(0, 15)
           .map(item => (
             <RepoItem
               key={item.id}
@@ -31,6 +32,9 @@ class SideNav extends Component {
               {...item}
             />
           ))}
+        <button className={styles.viewAll} onClick={() => history.push('/repos')} type="button">
+          View All
+        </button>
       </aside>
     );
   }
