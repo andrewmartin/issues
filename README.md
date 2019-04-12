@@ -2,7 +2,7 @@
 
 This is an example project that showcases React/Redux to sort Github issues.
 
-[View Demo on CodeSandbox](https://github.com/andrewmartin/issues)
+[View Demo](http://am-issues.s3-website-us-west-1.amazonaws.com)
 
 Goals of the application:
 
