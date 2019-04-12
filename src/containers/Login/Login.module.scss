@@ -1,0 +1,43 @@
+@import "~styles/variables";
+@import "~styles/mixins";
+
+.layout {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  background: $brand-dark;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  min-height: 300px;
+  margin: 0 auto;
+  padding: 25px;
+  border-radius: $border-radius;
+  background: $gray-light;
+
+  h2 {
+    margin: 0 0 15px;
+    letter-spacing: -.5px;
+    font-size: 30px;
+    line-height: 1;
+  }
+}
+
+.input {
+  flex: 1;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button {
+  @include button;
+}
