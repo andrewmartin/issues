@@ -1,15 +1,6 @@
 @import "~styles/variables";
 @import "~styles/mixins";
 
-.layout {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  background: $brand-dark;
-}
-
 .container {
   @include container;
   margin-top: 50px;

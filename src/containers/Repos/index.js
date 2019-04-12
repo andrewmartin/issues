@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
 import { actions as repoActions } from 'reducers/repo/repo';
 import Error from 'components/Error';
-import RepoItem from './components/RepoItem';
+import RepoItem from 'components/RepoItem';
 
 import styles from './Repos.module.scss';
 
@@ -18,12 +17,12 @@ export class Repos extends Component {
   }
 
   goToRepo = item => {
-    const { goToRepo } = this.props;
+    const { history } = this.props;
     const {
       name,
       owner: { login },
     } = item;
-    goToRepo({ login, name });
+    history.push(`/repos/${login}/issues/${name}`);
   };
 
   render() {
@@ -37,7 +36,12 @@ export class Repos extends Component {
         {items
           .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
           .map(item => (
-            <RepoItem key={item.id} onClick={() => this.goToRepo(item)} {...item} />
+            <RepoItem
+              key={item.id}
+              isEmpty={item.open_issues_count < 1}
+              onClick={() => this.goToRepo(item)}
+              {...item}
+            />
           ))}
         <Error error={serverError} />
       </div>
@@ -50,7 +54,7 @@ const mapStateToProps = ({ repo }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  goToRepo: ({ login, name }) => dispatch(push(`/repos/${login}/issues/${name}`)),
+  dispatch,
   actions: bindActionCreators(
     {
       ...repoActions,

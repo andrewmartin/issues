@@ -3,10 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions as repoActions } from 'reducers/repo/repo';
 import { actions as issueActions } from 'reducers/issue/issue';
-import Error from 'components/Error';
-import IssueItem from './components/IssueItem';
 
-import styles from './Repos.module.scss';
+import SideNav from 'components/SideNav';
+import Error from 'components/Error';
+
+import IssueItem from './components/IssueItem';
+import styles from './Issues.module.scss';
 
 export class Issues extends Component {
   componentDidMount() {
@@ -36,18 +38,22 @@ export class Issues extends Component {
 
   render() {
     const {
+      repo: { items: repoItems },
       issue: { serverError, items },
     } = this.props;
 
     return (
       <div className={styles.container}>
-        <h2 className={styles.pageTitle}>Issues</h2>
-        {items
-          .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
-          .map(item => (
-            <IssueItem key={item.id} {...item} />
-          ))}
-        <Error error={serverError} />
+        <SideNav items={repoItems} />
+        <main className={styles.main}>
+          <h2 className={styles.pageTitle}>Issues</h2>
+          {items
+            .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
+            .map(item => (
+              <IssueItem key={item.id} {...item} />
+            ))}
+          <Error error={serverError} />
+        </main>
       </div>
     );
   }
