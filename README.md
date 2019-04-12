@@ -2,6 +2,8 @@
 
 This is an example project that showcases React/Redux to sort Github issues.
 
+[View Demo on CodeSandbox](https://github.com/andrewmartin/issues)
+
 Goals of the application:
 
 1. Provide interface to login with `apiKey`
