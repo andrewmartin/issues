@@ -1,68 +1,100 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Github Sort Issues
 
-## Available Scripts
+This is an example project that showcases React/Redux to sort Github issues.
 
-In the project directory, you can run:
+[View Demo on CodeSandbox](https://github.com/andrewmartin/issues)
 
-### `npm start`
+Goals of the application:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Provide interface to login with `apiKey`
+2. Save apiKey into localstorage (to allow subsequent visits without re-logging in)
+3. Fetch repositories of current user
+4. See issues related to each repository
+5. Set a custom order of issues (and fallback to default order)
+6. Persist said order to local browser storage
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Quickstart
 
-### `npm test`
+1. Grab a [Github API personal access token](https://github.com/settings/tokens)
+2. Copy the token to your clipboard
+3. `yarn` and `yarn start`
+4. Login with your given token.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Developer Quickstart
 
-### `npm run build`
+1. Copy `.env-example` to `.env` in the project root, updating parameters if necessary.
+2. `yarn`
+3. `yarn start`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tests
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+1. `yarn test`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Application Structure
 
-### `npm run eject`
+This is a high level view of the notable files and directories in this application:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+├── .eslintrc.js -> custom eslint config
+├── .env -> app environment
+├── .prettierrc -> prettier config
+├── api -> api singleton (uses `axios`)
+├── components -> shared components
+├── containers -> app containers
+├── index.js -> app entry and render call
+├── index.scss -> global styles (mostly resets)
+├── reducers -> application redux reducers (and action creators)
+├── selectors -> redux store selectors
+├── store -> redux store configuration and helpers
+└── styles -> shared styles
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The general pattern held here is that those files in `containers` will hold the `mapStateToProps` assignments only, and pass down to other containers.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### A brief walk through
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+We have top level keys to store the data for the `user`, `repo`, and `issue` items, which in turn tend to correspond to an API resource.
 
-## Learn More
+The most complex area of this application is likely in the `onSetOrder` action creator found in the `reducers/issue`. This action creator takes an array of sorted items (provided by `react-beautiful-dnd`'s callback and a simple function to rearrange the items) and modifies the reducer to apply an order based on the `name` of the repo.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+For example:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+dispatch(setOrder({
+  name: 'some-repo',
+  issues: [{
+    id: 123
+    ...
+  }, {
+    id: 252
+    ...
+  }])
+})
+```
 
-### Code Splitting
+...will modify the `issue` reducer to something like:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```js
+state.issue.order = {
+  'some-repo': {
+    123: 0,
+    252: 1
+  }
+}
+```
 
-### Analyzing the Bundle Size
+In turn we have a [selector](./src/selectors/index.js) that will iterate through these key based values and return its proper sort order:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```js
+// sortIssues selector
+...
+return state.issue.order[name][a.id] < state.issue.order[name][b.id] ? -1 : 1;
+...
+```
 
-### Making a Progressive Web App
+This is one of the more notably complex behaviors in this project.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+##### Roadmap
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- [ ] More robust selectors
+- [ ] Reducer Tests
