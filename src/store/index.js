@@ -1,5 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
+import { createWhitelistFilter } from 'redux-persist-transform-filter';
+
 import api from 'api';
 import { createBrowserHistory } from 'history';
 import rootReducer from 'reducers';
@@ -26,7 +28,8 @@ export default () => {
   const persistConfig = {
     key: 'issues',
     storage,
-    whitelist: ['user'],
+    blacklist: ['issues', 'repo'],
+    transforms: [createWhitelistFilter('user'), createWhitelistFilter('issue', ['order'])],
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer(history));
