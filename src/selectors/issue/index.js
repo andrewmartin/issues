@@ -10,6 +10,6 @@ export const sortIssues = (a, b, state, name) => {
   return a.created_at < b.created_at ? -1 : 1;
 };
 
-export const getIssues = (state, name) => {
+export const selectIssues = (state, name) => {
   return state.issue.items ? state.issue.items.sort((a, b) => sortIssues(a, b, state, name)) : [];
 };

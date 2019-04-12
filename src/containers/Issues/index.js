@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { getIssues } from 'selectors/issue';
+import { selectIssues } from 'selectors/issue';
 import { actions as repoActions } from 'reducers/repo/repo';
 import { actions as issueActions } from 'reducers/issue/issue';
 import SideNav from 'components/SideNav';
@@ -27,7 +27,7 @@ export class Issues extends Component {
   fetchData = () => {
     const {
       repo,
-      actions: { getRepos },
+      actions: { getIssues, getRepos },
       match: {
         params: { name, owner },
       },
@@ -54,13 +54,12 @@ export class Issues extends Component {
       match: {
         params: { name },
       },
-      issue,
       issues,
       repo: { items: repoItems },
       issue: { serverError },
     } = this.props;
 
-    const hasSetOrder = issue.order[name];
+    const hasSetOrder = issues[name];
 
     return (
       <div className={styles.container}>
@@ -91,7 +90,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     repo: state.repo,
     issue: state.issue,
-    issues: getIssues(state, name),
+    issues: selectIssues(state, name),
   };
 };
 
