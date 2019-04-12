@@ -38,5 +38,6 @@ module.exports = {
         jsxBracketSameLine: true,
       },
     ],
+    'sort-imports': 1,
   },
 };
