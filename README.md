@@ -3,6 +3,7 @@
 This is an example project that showcases React/Redux to sort Github issues.
 
 [View Demo](http://am-issues.s3-website-us-west-1.amazonaws.com)
+[View Screencast](http://cloud.believelabs.com/2d23881048e8)
 
 Goals of the application:
 
@@ -27,7 +28,7 @@ Goals of the application:
 2. `yarn`
 3. `yarn start`
 
-*We are using `husky` to enforce the linting rules before committing. Invalid lint rules will attempted to be fixed if found, and prevented from being committed.*
+_We are using `husky` to enforce the linting rules before committing. Invalid lint rules will attempted to be fixed if found, and prevented from being committed._
 
 ## Tests
 
@@ -81,9 +82,9 @@ dispatch(setOrder({
 state.issue.order = {
   'some-repo': {
     123: 0,
-    252: 1
-  }
-}
+    252: 1,
+  },
+};
 ```
 
 In turn we have a [selector](./src/selectors/index.js) that will iterate through these key based values and return its proper sort order:
