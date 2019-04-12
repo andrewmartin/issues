@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import { selectIssues } from 'selectors/issue';
 import { actions as repoActions } from 'reducers/repo/repo';
 import { actions as issueActions } from 'reducers/issue/issue';
+import SideNav from 'components/SideNav';
 import Error from 'components/Error';
-import IssueItem from './components/IssueItem';
 
-import styles from './Repos.module.scss';
+import DraggableIssues from './components/DraggableIssues';
+import styles from './Issues.module.scss';
 
 export class Issues extends Component {
   componentDidMount() {
@@ -34,29 +37,63 @@ export class Issues extends Component {
     getIssues({ name, owner });
   };
 
+  onSetOrder = issues => {
+    const {
+      match: {
+        params: { name },
+      },
+      actions: { setOrder },
+    } = this.props;
+
+    setOrder({ name, issues });
+  };
+
   render() {
     const {
-      issue: { serverError, items },
+      actions: { resetOrder },
+      match: {
+        params: { name },
+      },
+      issue,
+      issues,
+      repo: { items: repoItems },
+      issue: { serverError },
     } = this.props;
+
+    const hasSetOrder = issue.order[name];
 
     return (
       <div className={styles.container}>
-        <h2 className={styles.pageTitle}>Issues</h2>
-        {items
-          .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
-          .map(item => (
-            <IssueItem key={item.id} {...item} />
-          ))}
-        <Error error={serverError} />
+        <SideNav items={repoItems} />
+        <main className={styles.main}>
+          <h2 className={styles.pageTitle}>
+            Issues for <code className={styles.code}>{name}</code>
+          </h2>
+          {issues.length ? (
+            <DraggableIssues items={issues} onReset={hasSetOrder ? resetOrder : null} onSetOrder={this.onSetOrder} />
+          ) : (
+            <p>No issues found.</p>
+          )}
+          <Error error={serverError} />
+        </main>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ repo, issue }) => ({
-  repo,
-  issue,
-});
+const mapStateToProps = (state, ownProps) => {
+  const {
+    match: {
+      params: { name },
+    },
+  } = ownProps;
+
+  return {
+    repo: state.repo,
+    issue: state.issue,
+    issues: selectIssues(state, name),
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(

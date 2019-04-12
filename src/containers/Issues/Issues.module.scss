@@ -1,22 +1,32 @@
 @import "~styles/variables";
 @import "~styles/mixins";
-
-.layout {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  background: $brand-dark;
-}
+@import "~include-media/dist/include-media";
 
 .container {
   @include container;
+  display: flex;
+  flex-direction: row;
   margin-top: 50px;
+
+  @include media("<md") {
+    flex-direction: column;
+  }
+}
+
+.main {
+  flex: 1;
+
+  @include media("<md") {
+    order: -1;
+  }
 }
 
 .pageTitle {
   @include pageTitle;
+}
+
+.code {
+  color: $brand-dark;
 }
 
 .input {

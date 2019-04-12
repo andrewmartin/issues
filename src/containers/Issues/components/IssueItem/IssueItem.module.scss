@@ -23,11 +23,24 @@
   &:hover {
     cursor: pointer;
     border-color: $brand-primary;
-    background: $gray;
+    background: darken($gray-light, 1%);
   }
 }
 
-.badge {
-  @include badge;
-  margin-left: auto;
+.img {
+  width: 40px;
+  margin-right: 25px;
+}
+
+.date,
+.updated {
+  display: block;
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.updated {
+  margin: 0 0 0 auto;
+  color: $brand-primary;
 }

@@ -1,0 +1,11 @@
+@import "~styles/mixins";
+@import "~styles/variables";
+
+.isDragging {
+  opacity: .5;
+}
+
+.button {
+  @include button;
+  margin: 15px 0 0;
+}

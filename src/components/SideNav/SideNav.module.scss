@@ -1,0 +1,35 @@
+@import "~styles/variables";
+@import "~include-media/dist/include-media";
+
+.container {
+  width: 25%;
+  padding-right: 30px;
+
+  @include media("<md") {
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
+.repoItem {
+  font-size: 14px;
+
+  > span {
+    display: none;
+  }
+}
+
+.viewAll {
+  padding: 5px 10px;
+  transition: all .2s ease-out;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  outline: none;
+  background: $gray;
+
+  &:hover {
+    cursor: pointer;
+    color: #fff;
+    background: $brand-primary;
+  }
+}
