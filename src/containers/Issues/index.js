@@ -1,43 +1,51 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
 import { actions as repoActions } from 'reducers/repo/repo';
+import { actions as issueActions } from 'reducers/issue/issue';
 import Error from 'components/Error';
-import RepoItem from './components/RepoItem';
+import IssueItem from './components/IssueItem';
 
 import styles from './Repos.module.scss';
 
-export class Repos extends Component {
+export class Issues extends Component {
   componentDidMount() {
-    const {
-      actions: { getRepos },
-    } = this.props;
-
-    getRepos();
+    this.fetchData();
   }
 
-  goToRepo = item => {
-    const { goToRepo } = this.props;
+  componentDidUpdate(prevProps) {
     const {
-      name,
-      owner: { login },
-    } = item;
-    goToRepo({ login, name });
+      match: { params },
+    } = this.props;
+
+    if (params !== prevProps.match.params) this.fetchData();
+  }
+
+  fetchData = () => {
+    const {
+      repo,
+      actions: { getIssues, getRepos },
+      match: {
+        params: { name, owner },
+      },
+    } = this.props;
+
+    if (!repo.items.length) getRepos();
+    getIssues({ name, owner });
   };
 
   render() {
     const {
-      repo: { serverError, items },
+      issue: { serverError, items },
     } = this.props;
 
     return (
       <div className={styles.container}>
-        <h2 className={styles.pageTitle}>Repositories</h2>
+        <h2 className={styles.pageTitle}>Issues</h2>
         {items
           .sort((a, b) => (a.open_issues_count > b.open_issues_count ? -1 : 0))
           .map(item => (
-            <RepoItem key={item.id} onClick={() => this.goToRepo(item)} {...item} />
+            <IssueItem key={item.id} {...item} />
           ))}
         <Error error={serverError} />
       </div>
@@ -45,15 +53,16 @@ export class Repos extends Component {
   }
 }
 
-const mapStateToProps = ({ repo }) => ({
+const mapStateToProps = ({ repo, issue }) => ({
   repo,
+  issue,
 });
 
 const mapDispatchToProps = dispatch => ({
-  goToRepo: ({ login, name }) => dispatch(push(`/repos/${login}/issues/${name}`)),
   actions: bindActionCreators(
     {
       ...repoActions,
+      ...issueActions,
     },
     dispatch
   ),
@@ -62,4 +71,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Repos);
+)(Issues);

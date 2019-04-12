@@ -14,6 +14,15 @@ export class Login extends Component {
     apiKey: '',
   };
 
+  componentDidMount() {
+    const {
+      onLogin,
+      user: { id },
+    } = this.props;
+    if (id) return onLogin();
+    return null;
+  }
+
   componentDidUpdate(prevProps) {
     const {
       onLogin,
