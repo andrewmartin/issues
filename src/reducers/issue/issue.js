@@ -2,11 +2,11 @@ import { createAction, handleActions } from 'redux-actions';
 
 import { parseError } from 'store/helpers';
 
-const fetchIssueStart = createAction('issue/FETCH_START');
-const getIssuesSuccess = createAction('issue/FETCH_ISSUES');
-const setOrder = createAction('issue/SET_ORDER');
-const resetOrder = createAction('issue/RESET_ORDER');
-const issueError = createAction('issue/ERROR');
+export const fetchIssueStart = createAction('issue/FETCH_START');
+export const getIssuesSuccess = createAction('issue/FETCH_ISSUES');
+export const setOrder = createAction('issue/SET_ORDER');
+export const resetOrder = createAction('issue/RESET_ORDER');
+export const issueError = createAction('issue/ERROR');
 
 export const actions = {
   getIssues: ({ owner, name }) => async (dispatch, state, { api }) => {
@@ -54,7 +54,7 @@ const setIssueOrder = issues =>
 
 // removes the order key (to reset the order value altogether)
 const removeOrder = (state, name) => {
-  const newState = Object.assign({}, state);
+  const newState = Object.assign({}, state, {});
   delete newState[name];
   return newState;
 };
@@ -103,7 +103,7 @@ export default handleActions(
       next: (state, { payload: { name } }) => {
         return {
           ...state,
-          order: removeOrder(name, state.order),
+          order: removeOrder(state.order, name),
         };
       },
     },
