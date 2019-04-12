@@ -12,6 +12,17 @@ $gray-light: #f6f8ff;
 $brand-primary: #3056ba;
 $brand-dark: #1b2c48;
 $brand-error: #f16060;
+
 // options
 
 $border-radius: 10px;
+
+// grid
+
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);

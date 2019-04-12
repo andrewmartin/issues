@@ -1,9 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from 'containers/Login';
+
+import LoginContainer from 'containers/Login';
+import ReposContainer from 'containers/Repos';
+
+import LoggedInRoute from './LoggedInRoute';
 
 export default () => (
   <Switch>
-    <Route component={Login} path="/" />
+    <Route component={LoginContainer} exact path="/" />
+    <LoggedInRoute component={ReposContainer} exact path="/repos" />
   </Switch>
 );
