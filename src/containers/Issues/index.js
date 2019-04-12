@@ -69,6 +69,7 @@ export class Issues extends Component {
           <h2 className={styles.pageTitle}>
             Issues for <code className={styles.code}>{name}</code>
           </h2>
+          <p className={styles.hint}>Hint: Drag the issues to reorder them.</p>
           {issues.length ? (
             <DraggableIssues items={issues} onReset={hasSetOrder ? resetOrder : null} onSetOrder={this.onSetOrder} />
           ) : (
