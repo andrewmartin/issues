@@ -87,7 +87,7 @@ state.issue.order = {
 };
 ```
 
-In turn we have a [selector](./src/selectors/index.js) that will iterate through these key based values and return its proper sort order:
+In turn we have a [selector](./src/selectors/issue/index.js) that will iterate through these key based values and return its proper sort order:
 
 ```js
 // sortIssues selector
