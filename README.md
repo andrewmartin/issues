@@ -3,7 +3,7 @@
 This is an example project that showcases React/Redux to sort Github issues.
 
 - [View Demo](http://am-issues.s3-website-us-west-1.amazonaws.com)
-- [View Screencast](http://cloud.believelabs.com/2d23881048e8)
+- [View Screencast](https://share.getcloudapp.com/jku1p7Yg)
 
 Goals of the application:
 
